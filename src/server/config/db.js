@@ -14,7 +14,8 @@ export default class DB {
   create(query){
     return new Promise((resolve, reject) => {
       this.db.run(query, (err) => {
-        if(err) reject(err)
+        if(err) reject(err);
+        resolve();
       })
     })
   }
@@ -23,6 +24,7 @@ export default class DB {
     return new Promise((resolve, reject) => {
       this.db.run(query, (err) => {
         if(err) reject(err);
+        resolve();
       })
     })
   }
@@ -47,23 +49,23 @@ export default class DB {
 
   delete(query){
     return new Promise((resolve, reject) => {
-      this.db.each(query, (err, rows) => {
+      this.db.run(query, (err) => {
         if(err) reject(err);
-        resolve(rows)
+        resolve()
       })
     })
   }
   
   update(query){
     return new Promise((resolve, reject) => {
-      this.db.each(query, (err, rows) => {
+      this.db.run(query, (err) => {
         if(err) reject(err);
-        resolve(rows)
+        resolve()
       })
     })
   }
 
-  close(){
+  dbclose(){
     this.db.close((err) => {
       if (err) {
         return console.error(err.message);

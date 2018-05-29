@@ -1,7 +1,8 @@
 import express from 'express';
 import path from 'path';
 import middleware from './mid/middleware'
-import DB from './config/db';
+import apiRoutes from './routes';
+import dbCreate from './config/create';
 
 const port = 3000;
 const app = express();
@@ -11,6 +12,8 @@ const publicPath = path.resolve(__dirname, '../../public');
 
 middleware(app);
 import './services/auth';
+apiRoutes(app);
+dbCreate(app);
 
 app.use('/client', express.static(clientPath))
 app.use(express.static(publicPath))

@@ -13,9 +13,7 @@ const jwtVerify = token => new Promise((resolve, reject) => {
 });
 
 const generateJwt = data => new Promise((resolve, reject) => {
-  sign(data, secret, {
-    expiresIn: '12h'
-  }, (err, token) => {
+  sign(data, secret, { expiresIn: '12h' }, (err, token) => {
     if (err) {
       reject(err);
     }

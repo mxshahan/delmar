@@ -6,13 +6,16 @@
   "author": "Misbauddin Chowdhury",
   "scripts": {
     "start": "node dist/server/server.js",
+    "db": "node src/server/config/create.js",
     "dev": "nodemon",
     "build": "webpack -w",
     "react": "webpack-dev-server -w"
   },
   "license": "MIT",
   "dependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-register": "^6.26.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "compression": "^1.7.2",
     "cors": "^2.8.4",
@@ -36,6 +39,7 @@
     "babel": "^6.23.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",

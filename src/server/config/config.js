@@ -1,4 +1,5 @@
 const config = {
-  secret: 'abcdefgh'
+  secret: 'abcdefgh',
+  
 }
 export default config;
