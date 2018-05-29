@@ -1,0 +1,51 @@
+{
+  "name": "server-side-rendering-with-react",
+  "version": "1.0.1",
+  "description": "it's a simple project for server side rendering",
+  "main": "index.js",
+  "author": "Misbauddin Chowdhury",
+  "scripts": {
+    "start": "node dist/server/server.js",
+    "dev": "nodemon",
+    "build": "webpack -w",
+    "react": "webpack-dev-server -w"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "babel-register": "^6.26.0",
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-promise-router": "^3.0.2",
+    "helmet": "^3.12.1",
+    "history": "^4.7.2",
+    "jsonwebtoken": "^8.2.1",
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-router-dom": "^4.2.2",
+    "sqlite3": "^4.0.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.11",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.9.1",
+    "webpack-cli": "^2.1.4"
+  }
+}
