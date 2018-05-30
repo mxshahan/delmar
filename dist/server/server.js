@@ -26,7 +26,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var fallback = require('express-history-api-fallback');
 
-var port = 3000;
+var port = process.env.PORT || 3000;
 var app = (0, _express2.default)();
 
 var clientPath = _path2.default.resolve(__dirname, '../../dist/client');
