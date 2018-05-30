@@ -5,7 +5,7 @@ import apiRoutes from './routes';
 import dbCreate from './config/create';
 const fallback = require('express-history-api-fallback');
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 const clientPath = path.resolve(__dirname, '../../dist/client');
