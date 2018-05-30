@@ -5,10 +5,10 @@
   "main": "index.js",
   "author": "Misbauddin Chowdhury",
   "scripts": {
-    "start": "node dist/server/server.js",
     "db": "node src/server/config/create.js",
     "dev": "nodemon",
-    "build": "node bin/server.build.js"
+    "build": "node bin/server.build.js",
+    "start": "node dist/server/server.js"
   },
   "license": "MIT",
   "dependencies": {
@@ -38,6 +38,9 @@
     "shelljs": "^0.8.2",
     "sqlite3": "^4.0.0",
     "webpack-node-externals": "^1.7.2"
+  },
+  "engines": {
+    "node": "8.11.1"
   },
   "devDependencies": {
     "axios": "^0.18.0",
