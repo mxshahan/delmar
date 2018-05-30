@@ -1,0 +1,37 @@
+@import url('/css/font-awesome.min.css');
+@import url('/css/style.css');
+
+.err{
+  text-align: center;
+  color: #fff;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: rgba(255, 39, 24, 0.5);
+  padding: 15px 20px;
+  animation-name: errPoo;
+  animation-duration: 0.5s;
+}
+
+@keyframes errPoo {
+  from {bottom: -100px}
+  to {bottom: 20px}
+}
+
+#loading{
+  position: fixed;
+  top: 100px;
+  left: 0px;
+  right: 0px;
+  background: #b52323b5;
+  top: 0px;
+  bottom: 0px;
+  padding-top: 150px;
+  animation-name: fadeIn;
+  animation-duration: 0.3s;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0}
+  to { opacity: 1}
+}

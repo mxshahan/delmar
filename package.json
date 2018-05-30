@@ -8,7 +8,8 @@
     "db": "node src/server/config/create.js",
     "dev": "nodemon",
     "build": "node bin/server.build.js",
-    "start": "node dist/server/server.js"
+    "start": "node dist/server/server.js",
+    "webpack": "webpack -w"
   },
   "license": "MIT",
   "dependencies": {

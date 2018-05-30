@@ -21,7 +21,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ac0bc059ad0f3d33da72"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "99a5037cf7c53667a94b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -42556,6 +42556,141 @@ exports.default = Contact;
 
 /***/ }),
 
+/***/ "./src/client/Components/Dashboard/address.js":
+/*!****************************************************!*\
+  !*** ./src/client/Components/Dashboard/address.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Address = function (_Component) {
+  _inherits(Address, _Component);
+
+  function Address() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, Address);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Address.__proto__ || Object.getPrototypeOf(Address)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _this.handleData = function () {}, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(Address, [{
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "div",
+        { className: "pop-up_main_div", id: "pop1" },
+        _react2.default.createElement(
+          "span",
+          { className: "pop-up_main_close" },
+          _react2.default.createElement("i", { className: "fa fa-times", "aria-hidden": "true" })
+        ),
+        _react2.default.createElement(
+          "form",
+          null,
+          _react2.default.createElement(
+            "ul",
+            { className: "pop_up_main_ul" },
+            _react2.default.createElement(
+              "li",
+              null,
+              _react2.default.createElement(
+                "label",
+                null,
+                "Name"
+              ),
+              _react2.default.createElement("input", { type: "text", name: "text" })
+            ),
+            _react2.default.createElement(
+              "li",
+              null,
+              _react2.default.createElement(
+                "label",
+                null,
+                "Phone Number"
+              ),
+              _react2.default.createElement("input", { type: "text", name: "text" })
+            ),
+            _react2.default.createElement(
+              "li",
+              null,
+              _react2.default.createElement(
+                "label",
+                null,
+                "Email"
+              ),
+              _react2.default.createElement("input", { type: "text", name: "text" })
+            ),
+            _react2.default.createElement(
+              "li",
+              null,
+              _react2.default.createElement(
+                "label",
+                null,
+                "Addresses"
+              ),
+              _react2.default.createElement("textarea", null)
+            ),
+            _react2.default.createElement(
+              "li",
+              null,
+              _react2.default.createElement(
+                "label",
+                null,
+                "Rental Addresses"
+              ),
+              _react2.default.createElement("textarea", null)
+            )
+          ),
+          _react2.default.createElement(
+            "a",
+            { className: "pop_up_btn cancel_btn", href: "#" },
+            "Cancel"
+          ),
+          _react2.default.createElement(
+            "a",
+            { className: "pop_up_btn save_btn", href: "#", onClick: this.handleData },
+            "Save"
+          )
+        )
+      );
+    }
+  }]);
+
+  return Address;
+}(_react.Component);
+
+exports.default = Address;
+
+/***/ }),
+
 /***/ "./src/client/Components/Dashboard/index.js":
 /*!**************************************************!*\
   !*** ./src/client/Components/Dashboard/index.js ***!
@@ -42804,6 +42939,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 
+var _address = __webpack_require__(/*! ./address */ "./src/client/Components/Dashboard/address.js");
+
+var _address2 = _interopRequireDefault(_address);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -42843,7 +42982,7 @@ var Sidebar = function (_Component) {
           $('.pop-up_main_div, .overlay').fadeOut(700);
         });
 
-        $('.pop_up_btn, .overlay').click(function (e) {
+        $('.cancel_btn, .overlay').click(function (e) {
           $('.pop-up_main_div, .overlay').fadeOut(700);
         });
       });
@@ -42955,83 +43094,7 @@ var Sidebar = function (_Component) {
           )
         ),
         _react2.default.createElement('span', { className: 'overlay' }),
-        _react2.default.createElement(
-          'div',
-          { className: 'pop-up_main_div', id: 'pop1' },
-          _react2.default.createElement(
-            'span',
-            { className: 'pop-up_main_close' },
-            _react2.default.createElement('i', { className: 'fa fa-times', 'aria-hidden': 'true' })
-          ),
-          _react2.default.createElement(
-            'form',
-            null,
-            _react2.default.createElement(
-              'ul',
-              { className: 'pop_up_main_ul' },
-              _react2.default.createElement(
-                'li',
-                null,
-                _react2.default.createElement(
-                  'label',
-                  null,
-                  'Name'
-                ),
-                _react2.default.createElement('input', { type: 'text', name: 'text' })
-              ),
-              _react2.default.createElement(
-                'li',
-                null,
-                _react2.default.createElement(
-                  'label',
-                  null,
-                  'Phone Number'
-                ),
-                _react2.default.createElement('input', { type: 'text', name: 'text' })
-              ),
-              _react2.default.createElement(
-                'li',
-                null,
-                _react2.default.createElement(
-                  'label',
-                  null,
-                  'Email'
-                ),
-                _react2.default.createElement('input', { type: 'text', name: 'text' })
-              ),
-              _react2.default.createElement(
-                'li',
-                null,
-                _react2.default.createElement(
-                  'label',
-                  null,
-                  'Addresses'
-                ),
-                _react2.default.createElement('textarea', null)
-              ),
-              _react2.default.createElement(
-                'li',
-                null,
-                _react2.default.createElement(
-                  'label',
-                  null,
-                  'Rental Addresses'
-                ),
-                _react2.default.createElement('textarea', null)
-              )
-            ),
-            _react2.default.createElement(
-              'a',
-              { className: 'pop_up_btn', href: '#' },
-              'Cancel'
-            ),
-            _react2.default.createElement(
-              'a',
-              { className: 'pop_up_btn', href: '#' },
-              'Save'
-            )
-          )
-        )
+        _react2.default.createElement(_address2.default, null)
       );
     }
   }]);
@@ -43943,7 +44006,7 @@ var Private = exports.Private = [{ path: '/dashboard', exact: true, component: _
 
 var Public = exports.Public = [{ path: '/', exact: true, component: _Login2.default }, { path: '/signup', exact: true, component: _Signup2.default }];
 
-var indexRouter = exports.indexRouter = [{ path: '/', exact: true, component: _Home2.default }, { path: '/contact', exact: true, component: _Contact2.default }];
+var indexRouter = exports.indexRouter = [{ path: '/contact', exact: true, component: _Contact2.default }];
 
 /***/ }),
 
