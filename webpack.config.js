@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const nodeExternals = require('webpack-node-externals');
 const SRC = path.resolve(__dirname, 'src');
 const PUBLIC = path.resolve(__dirname, 'public');
 
@@ -12,7 +11,6 @@ module.exports = {
         publicPath: '/'
     },
     target: 'node',
-    externals: nodeExternals(),
     module: {
         rules: [{
             test: /\.(js|jsx)$/,
@@ -30,13 +28,19 @@ module.exports = {
     },
     plugins:[
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': `'production'`
+            'process.env.NODE_ENV': `'development'`
+        }),
+        new webpack.ProvidePlugin({
+          $: 'jquery',
+          jQuery: 'jquery',
+          'window.jQuery': 'jquery'
         }),
         new webpack.HotModuleReplacementPlugin()
     ],
-    mode: 'production',    
+    mode: 'development',    
     devtool: 'source-map',
     devServer: {
-        contentBase: path.resolve(__dirname, 'dist')
+        contentBase: path.resolve(__dirname, 'dist'),
+        historyApiFallback: true,
     }
 }

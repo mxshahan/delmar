@@ -3,6 +3,7 @@ import path from 'path';
 import middleware from './mid/middleware'
 import apiRoutes from './routes';
 import dbCreate from './config/create';
+const fallback = require('express-history-api-fallback');
 
 const port = 3000;
 const app = express();
@@ -16,7 +17,8 @@ apiRoutes(app);
 dbCreate(app);
 
 app.use('/client', express.static(clientPath))
-app.use(express.static(publicPath))
+app.use(express.static(publicPath));
+app.use(fallback('index.html', { root: publicPath }));
 
 app.listen(port, (err, next) => {
   if(err) throw err;

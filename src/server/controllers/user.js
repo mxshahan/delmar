@@ -10,12 +10,13 @@ let updatedUser;
 export const LoginUser = async (req, res) => {
   let VerifyUser;
   let { username, password } = req.body;
+  console.log(username, password)
   const db = new DB();
   try {
     user = await db.selectOne(`SELECT username, password FROM user WHERE username='${username}'`);
   } catch (e) {
     res.status(406).json({
-      error: e.message,
+      error: e,
       message: 'Username or Passowrd Mismatch'
     })
   } finally {
@@ -30,12 +31,12 @@ export const LoginUser = async (req, res) => {
         success: true,
         token
       });
-      db.dbclose();
     } else {
       res.status(406).json({
         message: 'Username or Passowrd Mismatch'
       })
     }
+    
   }
 
 }
@@ -43,6 +44,7 @@ export const LoginUser = async (req, res) => {
 export const SignupUser = async (req, res) => {
   const db = new DB();
   let { username, password, cpassword } = req.body;
+  console.log(req.body)
   if (password === cpassword) {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
@@ -54,7 +56,7 @@ export const SignupUser = async (req, res) => {
       });
     } catch (e) {
       res.status(406).json({
-        error: e.message,
+        error: e,
         message: 'Unable To Create Account'
       })
     } finally {
@@ -68,6 +70,7 @@ export const SignupUser = async (req, res) => {
     res.status(406).json({
       message: 'Password Mismatch'
     })
+    await db.dbclose();
   }
 }
 
@@ -77,7 +80,7 @@ export const myProfile = async (req, res) => {
     user = await db.selectOne(`SELECT * FROM user WHERE username='${req.user.username}'`);
   } catch (e) {
     res.status(404).json({
-      error: e.message,
+      error: e,
       message: 'Unavailable!'
     })
   } finally {
@@ -101,24 +104,50 @@ export const updateProfile = async (req, res) => {
     user = await db.selectOne(`SELECT * FROM user WHERE username='${req.user.username}'`);
     updatedUser = await db.update(`UPDATE user 
       SET 
-        name = '${name ? name : user.name}',
-        phone = '${phone ? phone : user.phone}',
-        email = '${email ? email : user.email}',
+        name = '${name}',
+        phone = '${phone}',
+        email = '${email}',
         password = '${password ? password : user.password}',
-        address = '${address ? address : user.address}',
-        rental_address = '${rental_address ? rental_address : user.rental_address}'
+        address = '${address}',
+        rental_address = '${rental_address}'
       WHERE username='${req.user.username}'`
     );
   } catch (e) {
     res.status(404).json({
-      error: e.message,
+      error: e,
       message: 'Cannot Update!'
     })
   } finally {
+    try {
+      user = await db.selectOne(`SELECT * FROM user WHERE username='${req.user.username}'`);
+    } catch (e) {
+      res.status(404).json({
+        error: e,
+        message: 'Cannot Update!'
+      })
+    }
     res.status(200).json({
       success: true,
-      message: 'successfully updated'       
+      user     
     })
     await db.dbclose();
+  }
+}
+
+export const checkUser = async (req, res) => {
+  const db = new DB();
+  try {
+    user = await db.selectOne(`SELECT username FROM user WHERE username='${req.headers.username}'`);
+  } catch (e) {
+    res.status(404).json({
+      error: e,
+      message: 'Username not exist',
+      success: true
+    })
+  } finally {
+    res.status(200).json({
+      success: false,
+      message: 'Username already exists'
+    })
   }
 }

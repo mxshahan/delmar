@@ -8,8 +8,7 @@
     "start": "node dist/server/server.js",
     "db": "node src/server/config/create.js",
     "dev": "nodemon",
-    "build": "webpack -w",
-    "react": "webpack-dev-server -w"
+    "build": "webpack -w"
   },
   "license": "MIT",
   "dependencies": {
@@ -20,9 +19,11 @@
     "compression": "^1.7.2",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "express-history-api-fallback": "^2.2.1",
     "express-promise-router": "^3.0.2",
     "helmet": "^3.12.1",
     "history": "^4.7.2",
+    "jquery": "^3.3.1",
     "jsonwebtoken": "^8.2.1",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
@@ -30,7 +31,10 @@
     "passport-local": "^1.0.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0",
     "sqlite3": "^4.0.0",
     "webpack-node-externals": "^1.7.2"
   },
