@@ -21,7 +21,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ac0bc059ad0f3d33da72"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "258cb36c220dbddc6d7a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -43943,7 +43943,7 @@ var Private = exports.Private = [{ path: '/dashboard', exact: true, component: _
 
 var Public = exports.Public = [{ path: '/', exact: true, component: _Login2.default }, { path: '/signup', exact: true, component: _Signup2.default }];
 
-var indexRouter = exports.indexRouter = [{ path: '/', exact: true, component: _Home2.default }, { path: '/contact', exact: true, component: _Contact2.default }];
+var indexRouter = exports.indexRouter = [{ path: '/contact', exact: true, component: _Contact2.default }];
 
 /***/ }),
 
