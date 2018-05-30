@@ -21,7 +21,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "96fcc0137885fe75caf3"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ac0bc059ad0f3d33da72"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -43600,7 +43600,7 @@ var Signup = function (_Component) {
               'Already have an account? ',
               _react2.default.createElement(
                 _reactRouterDom.Link,
-                { to: '/login' },
+                { to: '/' },
                 'Login'
               )
             ),
@@ -43837,7 +43837,7 @@ var PrivateRoute = function PrivateRoute(_ref) {
     _react2.default.createElement(_reactRouterDom.Route, _extends({}, rest, { component: function component(props) {
         return _react2.default.createElement(Component, props);
       } }))
-  ) : _react2.default.createElement(_reactRouterDom.Redirect, { to: '/login' });
+  ) : _react2.default.createElement(_reactRouterDom.Redirect, { to: '/' });
 };
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -43941,7 +43941,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Private = exports.Private = [{ path: '/dashboard', exact: true, component: _Dashboard2.default }];
 
-var Public = exports.Public = [{ path: '/login', exact: true, component: _Login2.default }, { path: '/signup', exact: true, component: _Signup2.default }];
+var Public = exports.Public = [{ path: '/', exact: true, component: _Login2.default }, { path: '/signup', exact: true, component: _Signup2.default }];
 
 var indexRouter = exports.indexRouter = [{ path: '/', exact: true, component: _Home2.default }, { path: '/contact', exact: true, component: _Contact2.default }];
 
