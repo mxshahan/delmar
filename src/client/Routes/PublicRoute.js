@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import{ Route, Redirect } from 'react-router-dom';
 
 const PublicRoute = ({isAuthenticated, component: Component, ...rest}) => (
-  isAuthenticated ? 
+  isAuthenticated && status === 1 ? 
     <Redirect to={'/dashboard'}/>
   :
   <Route {...rest} component={(props)=> {

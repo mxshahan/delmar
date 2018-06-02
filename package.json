@@ -5,7 +5,7 @@
   "main": "index.js",
   "author": "Misbauddin Chowdhury",
   "scripts": {
-    "db": "node src/server/config/create.js",
+    "db": "node src/server/config/execdb.js",
     "dev": "nodemon",
     "build": "node bin/server.build.js",
     "start": "node dist/server/server.js",

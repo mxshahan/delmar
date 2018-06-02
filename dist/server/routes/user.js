@@ -28,6 +28,8 @@ var router = (0, _expressPromiseRouter2.default)();
 router.route('/login').options((0, _cors2.default)()).post(_user.LoginUser);
 router.route('/signup').options((0, _cors2.default)()).post(_user.SignupUser);
 router.route('/').options((0, _cors2.default)()).get(_auth.isAuth, _user.myProfile).put(_auth.isAuth, _user.updateProfile);
+router.route('/approve/:username').get(_auth.isAuth, _user.getUser).put(_auth.isAuth, _user.approveUser);
+router.route('/all').get(_user.getAllUser);
 router.route('/check').get(_user.checkUser);
 
 exports.default = router;

@@ -15,6 +15,9 @@ if (localStorage.getItem('auth')) {
 } else {
     store.dispatch(LogoutUser())
 }
+if(localStorage.getItem('status') != 1 && localStorage.getItem('accType') === 'ordinary') {
+    store.dispatch(LogoutUser())
+}
 
 const App = () => (
 <Provider store={store}>

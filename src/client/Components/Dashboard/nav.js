@@ -1,24 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { LogoutUser } from '../../Redux/Actions/Auth';
-import { SetUser, ClearUser } from '../../Redux/Actions/User';
+import { ClearUser } from '../../Redux/Actions/User';
 import Axios from 'axios';
 
 class Navbar extends React.Component{
-  componentDidMount() {
-    this.props.ClearUser();    
-    Axios.get(`/user`, {
-      headers: {
-        'auth': this.props.token
-      }
-    }).then((res) => {
-      this.props.SetUser(res.data.user)
-    }).catch((e) => {
-      console.log(e);
-      this.props.ClearUser();
-      this.props.LogoutUser();
-    })
-  }
   render(){
     return (
       <div className="dash_rightnav">
@@ -41,9 +27,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  LogoutUser: () => dispatch(LogoutUser()),
-  SetUser: (user) => dispatch(SetUser(user)),
-  ClearUser: () => dispatch(ClearUser())
+  ClearUser: () => dispatch(ClearUser()),
+  LogoutUser: () => dispatch(LogoutUser())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

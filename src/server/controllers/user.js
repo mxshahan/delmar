@@ -36,7 +36,7 @@ export const LoginUser = async (req, res) => {
         message: 'Username or Passowrd Mismatch'
       })
     }
-    
+
   }
 
 }
@@ -62,7 +62,7 @@ export const SignupUser = async (req, res) => {
     } finally {
       res.status(200).json({
         success: true,
-        token       
+        token
       })
       await db.dbclose();
     }
@@ -86,7 +86,7 @@ export const myProfile = async (req, res) => {
   } finally {
     res.status(200).json({
       success: true,
-      user       
+      user
     })
     await db.dbclose();
   }
@@ -94,7 +94,7 @@ export const myProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   const db = new DB();
-  let { name, phone, email, password, address, rental_address} = req.body;
+  let { email, password, address_id, acc_type } = req.body;
   if(password) {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
@@ -102,14 +102,12 @@ export const updateProfile = async (req, res) => {
   }
   try {
     user = await db.selectOne(`SELECT * FROM user WHERE username='${req.user.username}'`);
-    updatedUser = await db.update(`UPDATE user 
-      SET 
-        name = '${name}',
-        phone = '${phone}',
-        email = '${email}',
+    updatedUser = await db.update(`UPDATE user
+      SET
+        email = '${email ? email : user.email ? user.email : ''}',
         password = '${password ? password : user.password}',
-        address = '${address}',
-        rental_address = '${rental_address}'
+        address_id = '${address_id ? address_id : user.address_id ? user.address_id : ''}',
+        acc_type = '${acc_type ? acc_type : user.acc_type ? user.acc_type : 'ordinary'}'
       WHERE username='${req.user.username}'`
     );
   } catch (e) {
@@ -128,9 +126,78 @@ export const updateProfile = async (req, res) => {
     }
     res.status(200).json({
       success: true,
-      user     
+      user
     })
     await db.dbclose();
+  }
+}
+
+export const approveUser = async (req, res) => {
+  const db = new DB();
+  const { status } = req.body;
+  console.log(status )
+  try {
+    user = await db.selectOne(`SELECT * FROM user WHERE username='${req.user.username}'`);
+    if (user.acc_type === 'admin') {
+      updatedUser = await db.update(`UPDATE user
+        SET
+          status = ${status ? status : null}
+        WHERE username='${req.params.username}'`
+      );
+    } else {
+        res.status(406).json({
+          error: e,
+          message: 'You don\'t have proper right'
+        })
+    }
+  } catch (e) {
+    res.status(406).json({
+      error: e,
+      message: 'Not Found'
+    })
+  } finally {
+    user = await db.select(`SELECT * FROM user`);
+    res.status(201).json({
+      success: true,
+      user,
+      message: 'successfully approved'      
+    })
+    db.dbclose();
+  }
+}
+
+export const getUser = async (req, res) => {
+  const db = new DB();
+  try {
+    user = await db.selectOne(`SELECT * FROM user WHERE username='${req.params.username}'`);
+    await db.dbclose()
+  } catch (e) {
+    res.status(406).json({
+      error: e,
+      message: 'Not Found'
+    })
+  } finally {
+    res.status(200).json({
+      success: true,
+      user
+    })
+  }
+}
+
+export const getAllUser = async (req, res) => {
+  const db = new DB();
+  try {
+    user = await db.select(`SELECT * FROM user`);
+  } catch (e) {
+    res.status(406).json({
+      error: e,
+      message: 'Not Found'
+    })
+  } finally {
+    res.status(200).json({
+      success: true,
+      user
+    })
   }
 }
 

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import { connect } from 'react-redux';
 import Loader from '../Partials/Loader';
-import { LoginUser } from '../../Redux/Actions/Auth';
+import { LoginUser, LogoutUser } from '../../Redux/Actions/Auth';
+import { SetUser, ClearUser } from '../../Redux/Actions/User';
 
 class Login extends Component {
   state = {
@@ -16,19 +17,19 @@ class Login extends Component {
   onLogin = (e) => {
     e.preventDefault();
     if (this.state.username && this.state.password) {
-      this.setState({
+      !this.state.loading && this.setState({
         loading: true
-      })
+      });
       Axios.post(`/user/login`, {
         username: this.state.username,
         password: this.state.password
       }).then((res) => {
-        this.setState({
+        this.state.loading && this.setState({
           loading: false
         });
         this.props.LoginUser(res.data);
-        this.props.history.push('/dashboard');
         localStorage.setItem('auth', res.data.token)
+        this.getUser(res.data.token);
       }).catch((err) => {
         console.log(err);
         this.setState({
@@ -37,10 +38,31 @@ class Login extends Component {
         })
       })
     } else {
-      this.setState({
+      this.state.err && this.setState({
         err: 'Username or Password cannot be empty'
       });
     }
+  }
+
+  getUser = (token) => {
+    this.props.ClearUser();
+    Axios.get(`/user`, {
+      headers: {
+        'auth': token
+      }
+    }).then((res) => {
+      this.props.SetUser(res.data.user);
+      localStorage.setItem('accType', res.data.user.acc_type)
+      localStorage.setItem('status', res.data.user.status);
+      if(res.data.user.status != 1 && res.data.user.acc_type != 'admin') {
+        this.props.LogoutUser();
+      }
+      this.props.history.push('/dashboard');
+    }).catch((e) => {
+      console.log(e);
+      this.props.ClearUser();
+      this.props.LogoutUser();
+    })
   }
 
   render() {
@@ -68,17 +90,17 @@ class Login extends Component {
             <form onSubmit={this.onLogin}>
               <ul className="login_ul">
                 <li>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     placeholder="Username"
                     onChange={(e) => this.setState({ username: e.target.value})}
                   />
                 </li>
                 <li>
-                  <input 
-                    type="password" 
+                  <input
+                    type="password"
                     placeholder="Password"
-                    onChange={(e) => this.setState({ password: e.target.value}) }                   
+                    onChange={(e) => this.setState({ password: e.target.value}) }
                   />
                 </li>
                 <li><input type="submit" value="Submit"/></li>
@@ -89,13 +111,16 @@ class Login extends Component {
             <span className="creat_acc"><Link to="/signup">Create an Account</Link></span>
           </div>
         </div>
-      </div> 
+      </div>
     )
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  LoginUser: (data) => dispatch(LoginUser(data))
+  LoginUser: (data) => dispatch(LoginUser(data)),
+  SetUser: (user) => dispatch(SetUser(user)),
+  ClearUser: () => dispatch(ClearUser()),
+  LogoutUser: () => dispatch(LogoutUser())
 })
 
 export default connect(undefined, mapDispatchToProps)(Login)

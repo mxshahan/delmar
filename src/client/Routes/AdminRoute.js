@@ -4,22 +4,22 @@ import{ Route, Redirect } from 'react-router-dom';
 import Sidebar from '../Components/Dashboard/sidebar';
 import Navbar from '../Components/Dashboard/nav';
 
-const PrivateRoute = ({isAuthenticated, component: Component, ...rest}) => (
-    isAuthenticated ? (
+const AdminRoute = ({isAuthenticated, accType, component: Component, ...rest}) => (
+    isAuthenticated && accType === 'admin' ? (
       <div className="dash_mainpage">
-        <Sidebar/>  
+        <Sidebar/>
         <Navbar/>
         <Route {...rest} component={(props)=> (
           <Component {...props}/>
         )}/>
       </div>
     )
-    : <Redirect to="/"/>
+    : <Redirect to="/dashboard"/>
 )
 
 const mapStateToProps = (state) => ({
     isAuthenticated: !!state.auth.token,
-    status: localStorage.getItem('status')
+    accType: localStorage.getItem('accType')
 })
 
-export default connect(mapStateToProps)(PrivateRoute);
+export default connect(mapStateToProps)(AdminRoute);

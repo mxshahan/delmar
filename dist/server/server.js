@@ -16,14 +16,11 @@ var _routes = require('./routes');
 
 var _routes2 = _interopRequireDefault(_routes);
 
-var _create = require('./config/create');
-
-var _create2 = _interopRequireDefault(_create);
-
 require('./services/auth');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import dbCreate from './config/create';
 var fallback = require('express-history-api-fallback');
 
 var port = process.env.PORT || 3000;
@@ -35,7 +32,7 @@ var publicPath = _path2.default.resolve(__dirname, '../../public');
 (0, _middleware2.default)(app);
 
 (0, _routes2.default)(app);
-(0, _create2.default)(app);
+// dbCreate(app);
 
 app.use('/client', _express2.default.static(clientPath));
 app.use(_express2.default.static(publicPath));

@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import createHistory from 'history/createBrowserHistory';
 import { Router, Switch, Route } from 'react-router-dom'
 
-import { 
+import {
   indexRouter,
   Public,
-  Private
+  Private,
+  Admin
 } from './Router';
 
 import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
+import AdminRoute from './AdminRoute'
 
 export const history = createHistory()
 
@@ -32,6 +34,11 @@ class AppRouter extends Component {
             {
               Public.map((R, k) => {
                 return <PublicRoute key={k} path={R.path} component={R.component} exact={R.exact}/>
+              })
+            }
+            {
+              Admin.map((R, k) => {
+                return <AdminRoute key={k} path={R.path} component={R.component} exact={R.exact}/>
               })
             }
           </Switch>

@@ -1,6 +1,8 @@
 @import url('/css/font-awesome.min.css');
 @import url('/css/style.css');
 
+$bg: #0f2238;
+
 .err{
   text-align: center;
   color: #fff;
@@ -35,3 +37,118 @@
   from {opacity: 0}
   to { opacity: 1}
 }
+
+
+.bookingspan{
+  min-height:auto;
+}
+
+.bookingspan table, td, th {    
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.bookingspan table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+}
+
+.bookingspan th, td {
+  padding: 15px;
+}
+
+#userRequest thead tr td{
+  text-align: center;
+}
+
+#userRequest tr td:nth-child(1){
+  width: 70%
+}
+
+#userRequest tr td:nth-child(2){
+  text-align: center
+}
+
+#userRequest{
+  padding: 10px;
+}
+
+#userRequest span{
+  padding: 10px;
+  display: inline-block
+}
+
+#approval_action span{
+  cursor: pointer;
+  padding: 10px;
+  display: inline-block;
+  background: $bg;
+}
+#approval_action #cancel{
+  background:rgb(190, 0, 13);
+}
+
+.bookingspan_user{
+  padding: 20px 0px;
+}
+
+#dialog{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top:0px;
+  left: 0px;
+  background:#0f2238b2;
+  animation-name: fadeIn;
+  animation-duration: 0.5s
+}
+
+#dialog #dialog_box{
+  -width: 300px;
+  background: #fff;
+  color:#0f2238;
+  border-radius: 10px;
+  padding: 25px;
+  text-align: center;
+  margin-top: 150px;
+  font-size: 14px;
+  animation-name: fromTop;
+  animation-duration: 0.5s
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes fromTop {
+  from {
+    margin-top: -150px
+  } to {
+    margin-top: 150px
+  }
+}
+
+#dialog #dialog_box #okBtn{
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 5px 15px;
+  background: #123;
+  color: #fed;
+  cursor: pointer;
+}
+#dialog #dialog_box #cancelBtn{
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 5px 15px;
+  background: rgb(223, 0, 0);
+  color: #fed;
+  cursor: pointer;
+}
+#dialog #dialog_box span{
+  margin-top:20px;
+}  

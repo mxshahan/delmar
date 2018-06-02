@@ -21,7 +21,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "99a5037cf7c53667a94b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "4a2223c9a816770e7d5c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -2576,6 +2576,782 @@ module.exports = {"name":"axios","version":"0.18.0","description":"Promise based
 
 /***/ }),
 
+/***/ "./node_modules/babel-runtime/node_modules/regenerator-runtime/runtime-module.js":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/babel-runtime/node_modules/regenerator-runtime/runtime-module.js ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// This method of obtaining a reference to the global object needs to be
+// kept identical to the way it is obtained in runtime.js
+var g = function () {
+  return this;
+}() || Function("return this")();
+
+// Use `getOwnPropertyNames` because not all browsers support calling
+// `hasOwnProperty` on the global `self` object in a worker. See #183.
+var hadRuntime = g.regeneratorRuntime && Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
+
+// Save the old regeneratorRuntime in case it needs to be restored later.
+var oldRuntime = hadRuntime && g.regeneratorRuntime;
+
+// Force reevalutation of runtime.js.
+g.regeneratorRuntime = undefined;
+
+module.exports = __webpack_require__(/*! ./runtime */ "./node_modules/babel-runtime/node_modules/regenerator-runtime/runtime.js");
+
+if (hadRuntime) {
+  // Restore the original runtime.
+  g.regeneratorRuntime = oldRuntime;
+} else {
+  // Remove the global property added by runtime.js.
+  try {
+    delete g.regeneratorRuntime;
+  } catch (e) {
+    g.regeneratorRuntime = undefined;
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/babel-runtime/node_modules/regenerator-runtime/runtime.js":
+/*!********************************************************************************!*\
+  !*** ./node_modules/babel-runtime/node_modules/regenerator-runtime/runtime.js ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(module) {
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+!function (global) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  var inModule = ( false ? undefined : _typeof(module)) === "object";
+  var runtime = global.regeneratorRuntime;
+  if (runtime) {
+    if (inModule) {
+      // If regeneratorRuntime is defined globally and we're in a module,
+      // make the exports object identical to regeneratorRuntime.
+      module.exports = runtime;
+    }
+    // Don't bother evaluating the rest of this file if the runtime was
+    // already defined globally.
+    return;
+  }
+
+  // Define the runtime globally (as expected by generated code) as either
+  // module.exports (if we're in a module) or a new, empty object.
+  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  runtime.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] = GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function (method) {
+      prototype[method] = function (arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  runtime.isGeneratorFunction = function (genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor ? ctor === GeneratorFunction ||
+    // For the native GeneratorFunction constructor, the best we can
+    // do is to check its .name property.
+    (ctor.displayName || ctor.name) === "GeneratorFunction" : false;
+  };
+
+  runtime.mark = function (genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  runtime.awrap = function (arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value && (typeof value === "undefined" ? "undefined" : _typeof(value)) === "object" && hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function (value) {
+            invoke("next", value, resolve, reject);
+          }, function (err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function (unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration. If the Promise is rejected, however, the
+          // result for this iteration will be rejected with the same
+          // reason. Note that rejections of yielded Promises are not
+          // thrown back into the generator function, as is the case
+          // when an awaited Promise is rejected. This difference in
+          // behavior between yield and await is important, because it
+          // allows the consumer to decide what to do with the yielded
+          // rejection (swallow it and continue, manually .throw it back
+          // into the generator, abandon iteration, whatever). With
+          // await, by contrast, there is no opportunity to examine the
+          // rejection reason outside the generator function, so the
+          // only option is to throw it from the await expression, and
+          // let the generator function handle the exception.
+          result.value = unwrapped;
+          resolve(result);
+        }, reject);
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function (resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+      // If enqueue has been called before, then we want to wait until
+      // all previous Promises have been resolved before calling invoke,
+      // so that results are always delivered in the correct order. If
+      // enqueue has not been called before, then it is important to
+      // call invoke immediately, without waiting on a callback to fire,
+      // so that the async generator function has the opportunity to do
+      // any necessary setup in a predictable way. This predictability
+      // is why the Promise constructor synchronously invokes its
+      // executor callback, and why async functions synchronously
+      // execute code before the first await. Since we implement simple
+      // async functions in terms of async generators, it is especially
+      // important to get this right, even though it requires care.
+      previousPromise ? previousPromise.then(callInvokeWithMethodAndArg,
+      // Avoid propagating failures to Promises returned by later
+      // invocations of the iterator.
+      callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  runtime.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  runtime.async = function (innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList));
+
+    return runtime.isGeneratorFunction(outerFn) ? iter // If outerFn is a generator, return the full iterator.
+    : iter.next().then(function (result) {
+      return result.done ? result.value : iter.next();
+    });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done ? GenStateCompleted : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        if (delegate.iterator.return) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError("The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (!info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function () {
+    return this;
+  };
+
+  Gp.toString = function () {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  runtime.keys = function (object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1,
+            next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  runtime.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function reset(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" && hasOwn.call(this, name) && !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function stop() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function dispatchException(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !!caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function abrupt(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry && (type === "break" || type === "continue") && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function complete(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" || record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function finish(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function _catch(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function delegateYield(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+}(
+// In sloppy mode, unbound `this` refers to the global object, fallback to
+// Function constructor if we're in global strict mode. That is sadly a form
+// of indirect eval which violates Content Security Policy.
+function () {
+  return this;
+}() || Function("return this")());
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./node_modules/babel-runtime/regenerator/index.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/babel-runtime/regenerator/index.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/babel-runtime/node_modules/regenerator-runtime/runtime-module.js");
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/index.js!./node_modules/sass-loader/lib/loader.js!./src/client/Styles/style.scss":
 /*!*********************************************************************************************************!*\
   !*** ./node_modules/css-loader!./node_modules/sass-loader/lib/loader.js!./src/client/Styles/style.scss ***!
@@ -2589,7 +3365,7 @@ exports.push([module.i, "@import url(/css/font-awesome.min.css);", ""]);
 exports.push([module.i, "@import url(/css/style.css);", ""]);
 
 // module
-exports.push([module.i, ".err {\n  text-align: center;\n  color: #fff;\n  position: fixed;\n  right: 20px;\n  bottom: 20px;\n  background: rgba(255, 39, 24, 0.5);\n  padding: 15px 20px;\n  animation-name: errPoo;\n  animation-duration: 0.5s; }\n\n@keyframes errPoo {\n  from {\n    bottom: -100px; }\n  to {\n    bottom: 20px; } }\n\n#loading {\n  position: fixed;\n  top: 100px;\n  left: 0px;\n  right: 0px;\n  background: #b52323b5;\n  top: 0px;\n  bottom: 0px;\n  padding-top: 150px;\n  animation-name: fadeIn;\n  animation-duration: 0.3s; }\n\n@keyframes fadeIn {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n", ""]);
+exports.push([module.i, ".err {\n  text-align: center;\n  color: #fff;\n  position: fixed;\n  right: 20px;\n  bottom: 20px;\n  background: rgba(255, 39, 24, 0.5);\n  padding: 15px 20px;\n  animation-name: errPoo;\n  animation-duration: 0.5s; }\n\n@keyframes errPoo {\n  from {\n    bottom: -100px; }\n  to {\n    bottom: 20px; } }\n\n#loading {\n  position: fixed;\n  top: 100px;\n  left: 0px;\n  right: 0px;\n  background: #b52323b5;\n  top: 0px;\n  bottom: 0px;\n  padding-top: 150px;\n  animation-name: fadeIn;\n  animation-duration: 0.3s; }\n\n@keyframes fadeIn {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n.bookingspan {\n  min-height: auto; }\n\n.bookingspan table, td, th {\n  border: 1px solid #ddd;\n  text-align: left; }\n\n.bookingspan table {\n  border-collapse: collapse;\n  width: 100%;\n  font-size: 14px; }\n\n.bookingspan th, td {\n  padding: 15px; }\n\n#userRequest thead tr td {\n  text-align: center; }\n\n#userRequest tr td:nth-child(1) {\n  width: 70%; }\n\n#userRequest tr td:nth-child(2) {\n  text-align: center; }\n\n#userRequest {\n  padding: 10px; }\n\n#userRequest span {\n  padding: 10px;\n  display: inline-block; }\n\n#approval_action span {\n  cursor: pointer;\n  padding: 10px;\n  display: inline-block;\n  background: #0f2238; }\n\n#approval_action #cancel {\n  background: #be000d; }\n\n.bookingspan_user {\n  padding: 20px 0px; }\n\n#dialog {\n  width: 100%;\n  height: 100%;\n  position: fixed;\n  top: 0px;\n  left: 0px;\n  background: #0f2238b2;\n  animation-name: fadeIn;\n  animation-duration: 0.5s; }\n\n#dialog #dialog_box {\n  -width: 300px;\n  background: #fff;\n  color: #0f2238;\n  border-radius: 10px;\n  padding: 25px;\n  text-align: center;\n  margin-top: 150px;\n  font-size: 14px;\n  animation-name: fromTop;\n  animation-duration: 0.5s; }\n\n@keyframes fadeIn {\n  from {\n    opacity: 0; }\n  to {\n    opacity: 1; } }\n\n@keyframes fromTop {\n  from {\n    margin-top: -150px; }\n  to {\n    margin-top: 150px; } }\n\n#dialog #dialog_box #okBtn {\n  margin-left: 10px;\n  margin-right: 10px;\n  padding: 5px 15px;\n  background: #123;\n  color: #fed;\n  cursor: pointer; }\n\n#dialog #dialog_box #cancelBtn {\n  margin-left: 10px;\n  margin-right: 10px;\n  padding: 5px 15px;\n  background: #df0000;\n  color: #fed;\n  cursor: pointer; }\n\n#dialog #dialog_box span {\n  margin-top: 20px; }\n", ""]);
 
 // exports
 
@@ -42483,6 +43259,9 @@ if (localStorage.getItem('auth')) {
 } else {
     store.dispatch((0, _Auth.LogoutUser)());
 }
+if (localStorage.getItem('status') != 1 && localStorage.getItem('accType') === 'ordinary') {
+    store.dispatch((0, _Auth.LogoutUser)());
+}
 
 var App = function App() {
     return _react2.default.createElement(
@@ -42553,6 +43332,241 @@ var Contact = exports.Contact = function (_Component) {
 }(_react.Component);
 
 exports.default = Contact;
+
+/***/ }),
+
+/***/ "./src/client/Components/Dashboard/Admin/UsersRequest.js":
+/*!***************************************************************!*\
+  !*** ./src/client/Components/Dashboard/Admin/UsersRequest.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _regenerator = __webpack_require__(/*! babel-runtime/regenerator */ "./node_modules/babel-runtime/regenerator/index.js");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _User = __webpack_require__(/*! ../../../Redux/Actions/User */ "./src/client/Redux/Actions/User.js");
+
+var _Dialog = __webpack_require__(/*! ./../../Partials/Dialog */ "./src/client/Components/Partials/Dialog.js");
+
+var _Dialog2 = _interopRequireDefault(_Dialog);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var UsersRequest = function (_Component) {
+  _inherits(UsersRequest, _Component);
+
+  function UsersRequest() {
+    var _ref,
+        _this2 = this;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, UsersRequest);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = UsersRequest.__proto__ || Object.getPrototypeOf(UsersRequest)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      loading: false,
+      dialog: false,
+      message: null,
+      username: null
+    }, _this.handleApprove = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+      return _regenerator2.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+              _context.next = 3;
+              return _axios2.default.put('/user/approve/' + _this.state.username, {
+                status: 1
+              }, {
+                headers: {
+                  'auth': _this.props.token
+                }
+              });
+
+            case 3:
+              _context.next = 8;
+              break;
+
+            case 5:
+              _context.prev = 5;
+              _context.t0 = _context['catch'](0);
+
+              console.log(_context.t0);
+
+            case 8:
+              _context.prev = 8;
+              _context.next = 11;
+              return _this.props.updateUser(_this.state.username);
+
+            case 11:
+              _this.setState({
+                dialog: false
+              });
+              return _context.finish(8);
+
+            case 13:
+            case 'end':
+              return _context.stop();
+          }
+        }
+      }, _callee, _this2, [[0, 5, 8, 13]]);
+    })), _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(UsersRequest, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this3 = this;
+
+      _axios2.default.get('/user/all').then(function (res) {
+        _this3.props.SetAllUser(res.data.user);
+      }).catch(function (e) {
+        console.log(e);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this4 = this;
+
+      return _react2.default.createElement(
+        'div',
+        { id: 'userRequest' },
+        this.props.users && _react2.default.createElement(
+          'table',
+          null,
+          _react2.default.createElement(
+            'thead',
+            null,
+            _react2.default.createElement(
+              'tr',
+              null,
+              _react2.default.createElement(
+                'td',
+                null,
+                'Username'
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                'Status'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'tbody',
+            null,
+            this.props.users.map(function (user) {
+              return _react2.default.createElement(
+                'tr',
+                { key: user.id },
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  user.username
+                ),
+                _react2.default.createElement(
+                  'td',
+                  null,
+                  user.status === 1 ? _react2.default.createElement(
+                    'span',
+                    null,
+                    'Approved'
+                  ) : _react2.default.createElement(
+                    'div',
+                    { id: 'approval_action' },
+                    _react2.default.createElement(
+                      'span',
+                      { id: 'approve', onClick: function onClick() {
+                          _this4.setState({
+                            dialog: true,
+                            message: "approve",
+                            username: user.username
+                          });
+                        } },
+                      'Approve'
+                    ),
+                    _react2.default.createElement(
+                      'span',
+                      { id: 'cancel' },
+                      'Decline'
+                    )
+                  )
+                )
+              );
+            })
+          )
+        ),
+        this.state.dialog && _react2.default.createElement(_Dialog2.default, {
+          action: this.handleApprove,
+          message: this.state.message,
+          ok: 'OK',
+          cancel: 'Cancel',
+          onCancel: function onCancel() {
+            _this4.setState({
+              dialog: false
+            });
+          }
+        })
+      );
+    }
+  }]);
+
+  return UsersRequest;
+}(_react.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    users: state.user.all,
+    token: state.auth.token
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    SetAllUser: function SetAllUser(users) {
+      return dispatch((0, _User.SetAllUser)(users));
+    },
+    updateUser: function updateUser(data) {
+      return dispatch((0, _User.updateUser)(data));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(UsersRequest);
 
 /***/ }),
 
@@ -42691,6 +43705,78 @@ exports.default = Address;
 
 /***/ }),
 
+/***/ "./src/client/Components/Dashboard/admin.js":
+/*!**************************************************!*\
+  !*** ./src/client/Components/Dashboard/admin.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _UsersRequest = __webpack_require__(/*! ./Admin/UsersRequest */ "./src/client/Components/Dashboard/Admin/UsersRequest.js");
+
+var _UsersRequest2 = _interopRequireDefault(_UsersRequest);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Admin = function (_Component) {
+  _inherits(Admin, _Component);
+
+  function Admin() {
+    _classCallCheck(this, Admin);
+
+    return _possibleConstructorReturn(this, (Admin.__proto__ || Object.getPrototypeOf(Admin)).apply(this, arguments));
+  }
+
+  _createClass(Admin, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'dash_rightside' },
+        _react2.default.createElement(
+          'div',
+          { className: 'dash_bookstatment_div' },
+          _react2.default.createElement(
+            'span',
+            { className: 'bookingspan' },
+            'User Request'
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'bookingspan bookingspan_user' },
+            _react2.default.createElement(_UsersRequest2.default, null)
+          )
+        )
+      );
+    }
+  }]);
+
+  return Admin;
+}(_react.Component);
+
+exports.default = Admin;
+
+/***/ }),
+
 /***/ "./src/client/Components/Dashboard/index.js":
 /*!**************************************************!*\
   !*** ./src/client/Components/Dashboard/index.js ***!
@@ -42823,27 +43909,9 @@ var Navbar = function (_React$Component) {
   }
 
   _createClass(Navbar, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      this.props.ClearUser();
-      _axios2.default.get('/user', {
-        headers: {
-          'auth': this.props.token
-        }
-      }).then(function (res) {
-        _this2.props.SetUser(res.data.user);
-      }).catch(function (e) {
-        console.log(e);
-        _this2.props.ClearUser();
-        _this2.props.LogoutUser();
-      });
-    }
-  }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       return _react2.default.createElement(
         'div',
@@ -42878,8 +43946,8 @@ var Navbar = function (_React$Component) {
               'a',
               { href: '#', onClick: function onClick() {
                   localStorage.clear();
-                  _this3.props.ClearUser();
-                  _this3.props.LogoutUser();
+                  _this2.props.ClearUser();
+                  _this2.props.LogoutUser();
                 } },
               'Logout ',
               _react2.default.createElement('i', { className: 'fa fa-sign-out', 'aria-hidden': 'true' })
@@ -42901,14 +43969,11 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    LogoutUser: function LogoutUser() {
-      return dispatch((0, _Auth.LogoutUser)());
-    },
-    SetUser: function SetUser(user) {
-      return dispatch((0, _User.SetUser)(user));
-    },
     ClearUser: function ClearUser() {
       return dispatch((0, _User.ClearUser)());
+    },
+    LogoutUser: function LogoutUser() {
+      return dispatch((0, _Auth.LogoutUser)());
     }
   };
 };
@@ -42943,6 +44008,8 @@ var _address = __webpack_require__(/*! ./address */ "./src/client/Components/Das
 
 var _address2 = _interopRequireDefault(_address);
 
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -42971,6 +44038,7 @@ var Sidebar = function (_Component) {
   _createClass(Sidebar, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      console.log(this.props.accType);
       $(document).ready(function () {
         $(".justforpop").click(function (e) {
           e.preventDefault();
@@ -42994,6 +44062,7 @@ var Sidebar = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      console.log(this.props.accType);
       return _react2.default.createElement(
         'div',
         null,
@@ -43029,13 +44098,13 @@ var Sidebar = function (_Component) {
                 'li',
                 null,
                 _react2.default.createElement(
-                  'a',
-                  { href: '#' },
+                  _reactRouterDom.Link,
+                  { to: '/dashboard' },
                   _react2.default.createElement('img', { src: '/img/img1.png' }),
                   _react2.default.createElement(
                     'span',
                     { className: 'hmkyin_dshbrd_text' },
-                    'Dashboard'
+                    'Home Maintenance'
                   )
                 )
               ),
@@ -43045,11 +44114,11 @@ var Sidebar = function (_Component) {
                 _react2.default.createElement(
                   'a',
                   { href: '#' },
-                  _react2.default.createElement('img', { src: '/img/img2.png' }),
+                  _react2.default.createElement('img', { src: '/img/email_sport_img.png' }),
                   _react2.default.createElement(
                     'span',
                     { className: 'hmkyin_dshbrd_text' },
-                    'Email Us'
+                    'Email Support'
                   )
                 )
               ),
@@ -43063,16 +44132,16 @@ var Sidebar = function (_Component) {
                   _react2.default.createElement(
                     'span',
                     { className: 'hmkyin_dshbrd_text' },
-                    'Book My Home'
+                    'Property Pages'
                   )
                 )
               ),
-              _react2.default.createElement(
+              this.props.accType && this.props.accType === 'admin' && _react2.default.createElement(
                 'li',
                 null,
                 _react2.default.createElement(
-                  'a',
-                  { href: '#' },
+                  _reactRouterDom.Link,
+                  { to: '/dashboard/users' },
                   _react2.default.createElement('img', { src: '/img/img4.png' }),
                   _react2.default.createElement(
                     'span',
@@ -43104,7 +44173,7 @@ var Sidebar = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    user: state.user
+    accType: state.user.me && state.user.me.acc_type
   };
 };
 
@@ -43206,6 +44275,8 @@ var _Loader2 = _interopRequireDefault(_Loader);
 
 var _Auth = __webpack_require__(/*! ../../Redux/Actions/Auth */ "./src/client/Redux/Actions/Auth.js");
 
+var _User = __webpack_require__(/*! ../../Redux/Actions/User */ "./src/client/Redux/Actions/User.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43236,19 +44307,19 @@ var Login = function (_Component) {
     }, _this.onLogin = function (e) {
       e.preventDefault();
       if (_this.state.username && _this.state.password) {
-        _this.setState({
+        !_this.state.loading && _this.setState({
           loading: true
         });
         _axios2.default.post('/user/login', {
           username: _this.state.username,
           password: _this.state.password
         }).then(function (res) {
-          _this.setState({
+          _this.state.loading && _this.setState({
             loading: false
           });
           _this.props.LoginUser(res.data);
-          _this.props.history.push('/dashboard');
           localStorage.setItem('auth', res.data.token);
+          _this.getUser(res.data.token);
         }).catch(function (err) {
           console.log(err);
           _this.setState({
@@ -43257,10 +44328,29 @@ var Login = function (_Component) {
           });
         });
       } else {
-        _this.setState({
+        _this.state.err && _this.setState({
           err: 'Username or Password cannot be empty'
         });
       }
+    }, _this.getUser = function (token) {
+      _this.props.ClearUser();
+      _axios2.default.get('/user', {
+        headers: {
+          'auth': token
+        }
+      }).then(function (res) {
+        _this.props.SetUser(res.data.user);
+        localStorage.setItem('accType', res.data.user.acc_type);
+        localStorage.setItem('status', res.data.user.status);
+        if (res.data.user.status != 1 && res.data.user.acc_type != 'admin') {
+          _this.props.LogoutUser();
+        }
+        _this.props.history.push('/dashboard');
+      }).catch(function (e) {
+        console.log(e);
+        _this.props.ClearUser();
+        _this.props.LogoutUser();
+      });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -43376,11 +44466,112 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     LoginUser: function LoginUser(data) {
       return dispatch((0, _Auth.LoginUser)(data));
+    },
+    SetUser: function SetUser(user) {
+      return dispatch((0, _User.SetUser)(user));
+    },
+    ClearUser: function ClearUser() {
+      return dispatch((0, _User.ClearUser)());
+    },
+    LogoutUser: function LogoutUser() {
+      return dispatch((0, _Auth.LogoutUser)());
     }
   };
 };
 
 exports.default = (0, _reactRedux.connect)(undefined, mapDispatchToProps)(Login);
+
+/***/ }),
+
+/***/ "./src/client/Components/Partials/Dialog.js":
+/*!**************************************************!*\
+  !*** ./src/client/Components/Partials/Dialog.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _jquery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Dialog = function (_React$Component) {
+  _inherits(Dialog, _React$Component);
+
+  function Dialog() {
+    _classCallCheck(this, Dialog);
+
+    return _possibleConstructorReturn(this, (Dialog.__proto__ || Object.getPrototypeOf(Dialog)).apply(this, arguments));
+  }
+
+  _createClass(Dialog, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'div',
+        { id: 'dialog' },
+        _react2.default.createElement(
+          'span',
+          { id: 'dialog_box' },
+          _react2.default.createElement(
+            'p',
+            null,
+            'Are you sure want to ',
+            this.props.message,
+            '?'
+          ),
+          _react2.default.createElement(
+            'span',
+            {
+              id: 'okBtn',
+              className: 'fl',
+              onClick: function onClick() {
+                return _this2.props.action();
+              } },
+            this.props.ok ? this.props.ok : 'Yes'
+          ),
+          _react2.default.createElement(
+            'span',
+            {
+              id: 'cancelBtn',
+              className: 'fr',
+              onClick: function onClick() {
+                return _this2.props.onCancel();
+              }
+            },
+            this.props.cancel ? this.props.cancel : 'No'
+          )
+        )
+      );
+    }
+  }]);
+
+  return Dialog;
+}(_react2.default.Component);
+
+exports.default = Dialog;
 
 /***/ }),
 
@@ -43498,9 +44689,11 @@ var Signup = function (_Component) {
           _this.state.loading && _this.setState({
             loading: false
           });
-          _this.props.LoginUser(res.data);
-          _this.props.history.push('/dashboard');
-          localStorage.setItem('auth', res.data.token);
+          _this.setState({
+            err: "We will confirm you very soon by considering your information. Thanks"
+          });
+          // this.props.LoginUser(res.data);
+          // localStorage.setItem('auth', res.data.token)
         }).catch(function (err) {
           console.log(err);
           _this.setState({
@@ -43513,17 +44706,6 @@ var Signup = function (_Component) {
           err: 'Field cannot be empty'
         });
       }
-      _this.state.err && setTimeout(function () {
-        _this.setState({
-          err: false
-        });
-      }, 2000);
-      _this.state.loading && setTimeout(function () {
-        _this.setState({
-          loading: false,
-          err: 'Please try again'
-        });
-      }, 5000);
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -43551,6 +44733,17 @@ var Signup = function (_Component) {
     value: function render() {
       var _this2 = this;
 
+      this.state.err && setTimeout(function () {
+        _this2.setState({
+          err: false
+        });
+      }, 4000);
+      this.state.loading && setTimeout(function () {
+        _this2.setState({
+          loading: false,
+          err: 'Please try again'
+        });
+      }, 5000);
       return _react2.default.createElement(
         'div',
         { className: 'bg_image' },
@@ -43740,6 +44933,19 @@ var SetUser = exports.SetUser = function SetUser(user) {
     user: user
   };
 };
+var SetAllUser = exports.SetAllUser = function SetAllUser(users) {
+  return {
+    type: 'ALL_USER',
+    users: users
+  };
+};
+
+var updateUser = exports.updateUser = function updateUser(data) {
+  return {
+    type: 'UPDATE_USER',
+    data: data
+  };
+};
 
 var ClearUser = exports.ClearUser = function ClearUser() {
   return {
@@ -43793,15 +44999,32 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 exports.default = function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments[1];
 
   switch (action.type) {
     case 'SET_USER':
-      return state = action.user;
+      return state = _extends({
+        me: action.user
+      }, state);
+    case 'ALL_USER':
+      return state = _extends({
+        all: action.users
+      }, state);
+    case 'UPDATE_USER':
+      var updated = state.all.filter(function (user) {
+        if (user.username === action.data) {
+          return user.status = 1;
+        }
+      });
+      return state = _extends({
+        all: updated
+      }, state);
     case 'CLEAR_USER':
-      return state = {};
+      return {};
     default:
       return state;
   }
@@ -43848,6 +45071,70 @@ exports.default = function () {
     }), composeEnhancer((0, _redux.applyMiddleware)(_reduxThunk2.default)));
     return store;
 };
+
+/***/ }),
+
+/***/ "./src/client/Routes/AdminRoute.js":
+/*!*****************************************!*\
+  !*** ./src/client/Routes/AdminRoute.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+var _reactRouterDom = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+
+var _sidebar = __webpack_require__(/*! ../Components/Dashboard/sidebar */ "./src/client/Components/Dashboard/sidebar.js");
+
+var _sidebar2 = _interopRequireDefault(_sidebar);
+
+var _nav = __webpack_require__(/*! ../Components/Dashboard/nav */ "./src/client/Components/Dashboard/nav.js");
+
+var _nav2 = _interopRequireDefault(_nav);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var AdminRoute = function AdminRoute(_ref) {
+  var isAuthenticated = _ref.isAuthenticated,
+      accType = _ref.accType,
+      Component = _ref.component,
+      rest = _objectWithoutProperties(_ref, ['isAuthenticated', 'accType', 'component']);
+
+  return isAuthenticated && accType === 'admin' ? _react2.default.createElement(
+    'div',
+    { className: 'dash_mainpage' },
+    _react2.default.createElement(_sidebar2.default, null),
+    _react2.default.createElement(_nav2.default, null),
+    _react2.default.createElement(_reactRouterDom.Route, _extends({}, rest, { component: function component(props) {
+        return _react2.default.createElement(Component, props);
+      } }))
+  ) : _react2.default.createElement(_reactRouterDom.Redirect, { to: '/dashboard' });
+};
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    isAuthenticated: !!state.auth.token,
+    accType: localStorage.getItem('accType')
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(AdminRoute);
 
 /***/ }),
 
@@ -43905,7 +45192,8 @@ var PrivateRoute = function PrivateRoute(_ref) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    isAuthenticated: !!state.auth.token
+    isAuthenticated: !!state.auth.token,
+    status: localStorage.getItem('status')
   };
 };
 
@@ -43946,7 +45234,7 @@ var PublicRoute = function PublicRoute(_ref) {
       Component = _ref.component,
       rest = _objectWithoutProperties(_ref, ['isAuthenticated', 'component']);
 
-  return isAuthenticated ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/dashboard' }) : _react2.default.createElement(_reactRouterDom.Route, _extends({}, rest, { component: function component(props) {
+  return isAuthenticated && status === 1 ? _react2.default.createElement(_reactRouterDom.Redirect, { to: '/dashboard' }) : _react2.default.createElement(_reactRouterDom.Route, _extends({}, rest, { component: function component(props) {
       return _react2.default.createElement(
         'div',
         null,
@@ -43978,7 +45266,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps)(PublicRoute);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.indexRouter = exports.Public = exports.Private = undefined;
+exports.indexRouter = exports.Public = exports.Private = exports.Admin = undefined;
 
 var _Home = __webpack_require__(/*! ../Components/Home */ "./src/client/Components/Home/index.js");
 
@@ -44000,7 +45288,13 @@ var _Dashboard = __webpack_require__(/*! ../Components/Dashboard */ "./src/clien
 
 var _Dashboard2 = _interopRequireDefault(_Dashboard);
 
+var _admin = __webpack_require__(/*! ../Components/Dashboard/admin */ "./src/client/Components/Dashboard/admin.js");
+
+var _admin2 = _interopRequireDefault(_admin);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Admin = exports.Admin = [{ path: '/dashboard/users', exact: true, component: _admin2.default }];
 
 var Private = exports.Private = [{ path: '/dashboard', exact: true, component: _Dashboard2.default }];
 
@@ -44047,6 +45341,10 @@ var _PrivateRoute = __webpack_require__(/*! ./PrivateRoute */ "./src/client/Rout
 
 var _PrivateRoute2 = _interopRequireDefault(_PrivateRoute);
 
+var _AdminRoute = __webpack_require__(/*! ./AdminRoute */ "./src/client/Routes/AdminRoute.js");
+
+var _AdminRoute2 = _interopRequireDefault(_AdminRoute);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44086,6 +45384,9 @@ var AppRouter = function (_Component) {
             }),
             _Router.Public.map(function (R, k) {
               return _react2.default.createElement(_PublicRoute2.default, { key: k, path: R.path, component: R.component, exact: R.exact });
+            }),
+            _Router.Admin.map(function (R, k) {
+              return _react2.default.createElement(_AdminRoute2.default, { key: k, path: R.path, component: R.component, exact: R.exact });
             })
           )
         )

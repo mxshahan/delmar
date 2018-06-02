@@ -30,9 +30,11 @@ class Signup extends Component {
         this.state.loading && this.setState({
           loading: false
         });
-        this.props.LoginUser(res.data);
-        this.props.history.push('/dashboard');
-        localStorage.setItem('auth', res.data.token)
+        this.setState({
+          err: "We will confirm you very soon by considering your information. Thanks"
+        })
+        // this.props.LoginUser(res.data);
+        // localStorage.setItem('auth', res.data.token)
       }).catch((err) => {
         console.log(err);
         this.setState({
@@ -45,17 +47,6 @@ class Signup extends Component {
         err: 'Field cannot be empty'
       });
     }
-    this.state.err && setTimeout(() => {
-      this.setState({
-        err: false
-      })
-    }, 2000);
-    this.state.loading && setTimeout(() => {
-      this.setState({
-        loading: false,
-        err: 'Please try again'
-      })
-    }, 5000)
   }
 
   // checkUser = (e) => {
@@ -68,7 +59,7 @@ class Signup extends Component {
   //       success: true
   //     })
   //   }).catch((e) => {
-      
+
   //     this.setState({
   //       success: false
   //     })
@@ -76,6 +67,17 @@ class Signup extends Component {
   // }
 
   render() {
+    this.state.err && setTimeout(() => {
+      this.setState({
+        err: false
+      })
+    }, 4000);
+    this.state.loading && setTimeout(() => {
+      this.setState({
+        loading: false,
+        err: 'Please try again'
+      })
+    }, 5000)
     return (
       <div className="bg_image">
         <div className="login_logodiv">
@@ -89,24 +91,24 @@ class Signup extends Component {
             <form onSubmit={this.onSignup}>
               <ul className="login_ul">
                 <li>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     placeholder="Username"
                     onChange={(e) => this.setState({ username: e.target.value})}
                   />
                 </li>
                 {this.state.success && <span className="login_note">Username already exists</span>}
-                
+
                 <li>
-                  <input 
-                    type="password" 
+                  <input
+                    type="password"
                     placeholder="Password"
-                    onChange={(e) => this.setState({ password: e.target.value}) }                   
+                    onChange={(e) => this.setState({ password: e.target.value}) }
                   />
                 </li>
                 <li>
-                  <input 
-                    type="password" 
+                  <input
+                    type="password"
                     placeholder="Confirm Password"
                     onChange={(e) => this.setState({ cpassword: e.target.value}) }
                     onKeyUp={(e) => {
@@ -119,7 +121,7 @@ class Signup extends Component {
                           matched: false
                         })
                       }
-                    }}               
+                    }}
                   />
                 </li>
                 {this.state.matched === false && <span className="login_note">Password does not matched</span>}
@@ -132,7 +134,7 @@ class Signup extends Component {
             <span className="login_note">NOTE: Use the email you use for streamline to create this account.</span>
           </div>
         </div>
-      </div> 
+      </div>
     )
   }
 }
